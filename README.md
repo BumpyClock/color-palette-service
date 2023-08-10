@@ -1,6 +1,6 @@
 # Color Palette Service
 
-This project provides an API to generate a color palette from an image. Given an image URL and the number of desired colors, it returns a color palette as a JSON object. 
+Simple micro-service to provide an API endpoint to generate a color palette from an image. Takes an image URL and the number of desired colors, it returns a color palette as a JSON object. 
 
 ## Features
 
