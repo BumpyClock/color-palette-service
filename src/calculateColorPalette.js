@@ -1,23 +1,16 @@
 const axios = require('axios');
 const sharp = require('sharp');
-const ColorCache = require('./colorCache');
 
 const quantResolution=64;
 const pixelStepSize=128;
 class CalculateColorPalette {
   constructor(imgUrl) {
     this.imgUrl = imgUrl;
-    this.colorCache = new ColorCache();
   }
 
-  loadImageAndColor(paletteCount) {
+  loadImageAndColor(paletteCount, colorCache) {
     return new Promise((resolve, reject) => {
-      // Check the cache first
-      const cachedColors = this.colorCache.get(this.imgUrl);
-      if (cachedColors) {
-        resolve(cachedColors.slice(0, paletteCount));
-        return;
-      }
+      
 
       // Fetch the image using axios
       axios.get(this.imgUrl, { responseType: 'arraybuffer' })
@@ -46,7 +39,7 @@ class CalculateColorPalette {
               });
 
               // Add the result to the cache
-              this.colorCache.set(this.imgUrl, dominantColors.slice(0, paletteCount));
+    colorCache.set(this.imgUrl, dominantColors.slice(0, paletteCount)); // Moved to the express handler
 
               // Return the generated color palette
               resolve(dominantColors.slice(0, paletteCount));
