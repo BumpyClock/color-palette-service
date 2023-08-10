@@ -5,7 +5,7 @@
   "main": "src/color-palette-service.js",
   "scripts": {
     "start": "node src/color-palette-service.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "concurrently \"node src/color-palette-service.js\" \"http-server ./demo -p 80\""
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,9 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "sharp": "^0.32.4"
+  },
+  "devDependencies": {
+    "concurrently": "^6.5.1",
+    "http-server": "^14.1.1"
   }
 }

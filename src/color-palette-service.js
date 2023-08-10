@@ -7,7 +7,7 @@ const app = express();
 const port = 3000;
 
 
-const colorCache = new ColorCache();
+// const colorCache = new ColorCache();
 
 
 app.use(cors()); // To allow cross-origin requests
@@ -22,15 +22,15 @@ app.get('/get-palette', (req, res) => {
   }
 
   // Check the cache first
-  const cachedColors = colorCache.get(imgUrl);
-  if (cachedColors) {
-    res.json(cachedColors.slice(0, paletteCount)); // Return the cached colors
-    return;
-  }
+  // const cachedColors = colorCache.get(imgUrl);
+  // if (cachedColors) {
+  //   res.json(cachedColors.slice(0, paletteCount)); // Return the cached colors
+  //   return;
+  // }
 
   const palette = new ColorPalette(imgUrl);
-  palette.loadImageAndColor(paletteCount, colorCache).then(colors => {
-    colorCache.set(imgUrl, colors); // Store the full set of colors in the cache
+  palette.loadImageAndColor(paletteCount).then(colors => {
+    // colorCache.set(imgUrl, colors); // Store the full set of colors in the cache
     res.json({ colors: colors.slice(0, paletteCount) }); // Return the requested number of colors
   }).catch(error => {
     console.error(error);

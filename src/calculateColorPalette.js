@@ -2,7 +2,7 @@ const axios = require('axios');
 const sharp = require('sharp');
 
 const quantResolution=64;
-const pixelStepSize=128;
+const pixelStepSize=4;
 class CalculateColorPalette {
   constructor(imgUrl) {
     this.imgUrl = imgUrl;
@@ -25,12 +25,19 @@ class CalculateColorPalette {
               const pixels = [];
               for (let i = 0; i < imageBuffer.length; i += pixelStepSize) {
                 if (imageBuffer[i + 3] !== 0) { // Skip transparent pixels
-                  pixels.push([imageBuffer[i], imageBuffer[i + 1], imageBuffer[i + 2]]);
+                  const r = imageBuffer[i];
+                  const g = imageBuffer[i + 1];
+                  const b = imageBuffer[i + 2];
+                  // Skip black or near-black pixels
+                  if (!(r <= 10 && g <= 10 && b <= 10)) {
+                    pixels.push([r, g, b]);
+                  }
+                
                 }
               }
 
               // Apply the median cut algorithm to get the quantized colors
-              const quantizedColors = this.medianCut(pixels, quantResolution);
+              const quantizedColors = this.medianCut(pixels, paletteCount);
 
               // Dim the colors
               const dominantColors = quantizedColors.map(color => {
@@ -39,7 +46,7 @@ class CalculateColorPalette {
               });
 
               // Add the result to the cache
-    colorCache.set(this.imgUrl, dominantColors.slice(0, paletteCount)); // Moved to the express handler
+    // colorCache.set(this.imgUrl, dominantColors.slice(0, paletteCount)); // Moved to the express handler
 
               // Return the generated color palette
               resolve(dominantColors.slice(0, paletteCount));
@@ -58,7 +65,7 @@ class CalculateColorPalette {
     const [h, s, l] = this.rgbToHsl(r, g, b);
 
     // Reducing the lightness
-    const newL = l * .7; // Adjust the dimming factor here
+    const newL = l * 1; // Adjust the dimming factor here
 
     // Convert HSL back to RGB for debugging
     // const [debugR, debugG, debugB] = this.hslToRgb(h, s, l);
