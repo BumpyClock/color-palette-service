@@ -37,7 +37,7 @@ class CalculateColorPalette {
               }
 
               // Apply the median cut algorithm to get the quantized colors
-              const quantizedColors = this.medianCut(pixels, 64);
+              const quantizedColors = this.medianCut(pixels, quantResolution);
 
               // Dim the colors
               const dominantColors = quantizedColors.map(color => {
