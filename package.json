@@ -1,0 +1,28 @@
+{
+  "name": "color-palette-service",
+  "version": "0.0.1",
+  "description": "simple micro-service that takes an image URL as input and returns a color palette",
+  "main": "src/color-palette-service.js",
+  "scripts": {
+    "start": "node src/color-palette-service.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BumpyClock/color-palette-service.git"
+  },
+  "keywords": [
+    "color-palette",
+    "micro-service"
+  ],
+  "author": "Aditya Sharma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BumpyClock/color-palette-service/issues"
+  },
+  "homepage": "https://github.com/BumpyClock/color-palette-service#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2"
+  }
+}
