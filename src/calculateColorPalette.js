@@ -1,8 +1,10 @@
 const axios = require('axios');
 const sharp = require('sharp');
 
-const quantResolution=64;
+const quantResolution=128;
 const pixelStepSize=4;
+const targetResolution=1080;
+
 class CalculateColorPalette {
   constructor(imgUrl) {
     this.imgUrl = imgUrl;
@@ -18,7 +20,7 @@ class CalculateColorPalette {
           const buffer = Buffer.from(response.data, 'binary');
 
           // Use sharp to process the buffer
-          sharp(buffer)
+          sharp(buffer).resize(targetResolution)
             .raw()
             .toBuffer()
             .then(imageBuffer => {
@@ -29,7 +31,7 @@ class CalculateColorPalette {
                   const g = imageBuffer[i + 1];
                   const b = imageBuffer[i + 2];
                   // Skip black or near-black pixels
-                  if (!(r <= 10 && g <= 10 && b <= 10)) {
+                  if (!(r <= 20 && g <= 20 && b <= 20)) {
                     pixels.push([r, g, b]);
                   }
                 
@@ -37,7 +39,9 @@ class CalculateColorPalette {
               }
 
               // Apply the median cut algorithm to get the quantized colors
-              const quantizedColors = this.medianCut(pixels, paletteCount);
+              
+              let quantizedColors = this.medianCut(pixels, quantResolution);
+              // quantizedColors = this.medianCut(quantizedColors, paletteCount);
 
               // Dim the colors
               const dominantColors = quantizedColors.map(color => {
